@@ -1,8 +1,6 @@
-from pprint import pprint
-
 from client import CurrencyConverter
 
 if __name__ == "__main__":
     converter = CurrencyConverter()
-    result = converter.convert("btc", "usd")
-    pprint(result)
+    message = converter.convert("BTC", "USD")
+    notification = converter.send_to_user(user="@kaelducatti", message=message)
