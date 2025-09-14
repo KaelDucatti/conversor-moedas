@@ -4,7 +4,6 @@ import os
 import requests
 
 
-# Seu client.py adaptado para Lambda (sem dotenv)
 class CurrencyConverter:
     def __init__(self, api_key=None):
         self.__base_url = "https://economia.awesomeapi.com.br/json/last/"
