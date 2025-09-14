@@ -71,7 +71,7 @@ def lambda_handler(event, context):
         converter = CurrencyConverter()
         message = converter.convert("BTC", "USD")
         notification = converter.send_to_user(
-            user="@kaelducatti", message=message
+            user=os.environ.get("CALLMEBOT_USER"), message=message
         )
 
         print(f"💰 Cotação: {message}")
