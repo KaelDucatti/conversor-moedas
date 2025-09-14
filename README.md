@@ -86,32 +86,62 @@ Isso gera o arquivo `currency-bot.zip` pronto para subir no Lambda.
 
 ---
 
-## ☁️ Criando a Lambda pelo Console AWS
+## ☁️ Deploy no AWS Lambda (Console)
 
-1. Acesse o serviço **AWS Lambda**.
-2. Clique em **Criar função**.
+1. Acesse **AWS Console → Lambda → Create function**
 
-   * Nome: `currency-bot-btc`
-   * Runtime: `Python 3.9`
-   * Permissão: escolha uma role nova com permissão básica de execução Lambda.
-3. Em **Código**, faça upload do arquivo `currency-bot.zip`.
-4. Em **Configurações → Variáveis de ambiente**, adicione:
+   * Function name: `currency-bot-btc`
+   * Runtime: `Python 3.9` ou `Python 3.11`
+   * Clique em **Create function**
 
-   * `API_KEY` → sua chave da AwesomeAPI.
-   * `CALLMEBOT_USER` → seu usuário do CallMeBot (exemplo: `@seunome`).
-5. Salve e teste clicando em **Testar**.
+2. **Upload do código**
+
+   * Vá até a seção **Code source** → **Upload from** → **.zip file**
+   * Selecione `currency-bot.zip`
+   * Clique em **Save**
+
+3. **Configurar variáveis de ambiente**
+
+   * Aba **Configuration** → **Environment variables** → **Edit**
+   * Adicione:
+
+     * Key: `API_KEY` → sua chave da AwesomeAPI
+     * Key: `CALLMEBOT_USER` → seu usuário do CallMeBot (ex: `@seunome`)
+   * Clique em **Save**
+
+4. **Testar execução**
+
+   * Aba **Test** → **Create new test event**
+   * Event name: `test-btc`
+   * Event JSON: `{}` (pode deixar vazio)
+   * Clique em **Test** → Deve aparecer sucesso e você receber a mensagem no Telegram ✅
 
 ---
 
-## ⏰ Agendamento com EventBridge (Console AWS)
+## ⏰ Configurar execução automática (EventBridge)
 
-1. Acesse o serviço **Amazon EventBridge → Schedules**.
-2. Clique em **Criar Schedule**.
+1. Acesse **AWS Console → EventBridge → Create rule**
 
-   * Nome: `currency-bot-hourly`
-   * Frequência: `cron(0 8-23 * * ? *)` → Executa todo dia das 08h até 23h (inclusive).
-   * Alvo: selecione sua Lambda (`currency-bot-btc`).
-3. Salve. Agora sua função roda automaticamente nos horários definidos.
+   * Name: `currency-bot-hourly`
+   * Description: Executa cotação BTC de hora em hora
+   * Rule type: **Schedule**
+
+2. **Schedule**
+
+   * Schedule pattern: **Cron-based schedule**
+   * Cron expression: `0 * * * ? *`
+
+     * Isso executa todo minuto `0` de cada hora (ex: 13:00, 14:00, 15:00...)
+
+3. **Target**
+
+   * Target type: AWS service
+   * Select target: **Lambda function**
+   * Function: `currency-bot-btc`
+
+4. Clique em **Create rule**
+
+Agora a função será executada automaticamente a cada hora cheia.
 
 ---
 
@@ -146,4 +176,4 @@ Para evitar custos desnecessários:
 ## 📖 Observações
 
 * Esse projeto serve como exemplo educacional.
-* Se quiser melhorar, considere usar **AWS Lambda Layers** ou **Docker Images** para facilitar o deploy de dependências.
+* Se quiser melhorar, considere usar **AWS Lambda Layers** ou **Docker Images** para facilitar o deploy de depen
